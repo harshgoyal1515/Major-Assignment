@@ -23,7 +23,7 @@ jobs:
         run: |
           pytest
 
-  train-and-quantize:
+   train-and-quantize:
     needs: test-suite
     runs-on: ubuntu-latest
     steps:
@@ -43,7 +43,8 @@ jobs:
           python src/train.py
           python src/quantize.py
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload trained model
+        uses: actions/upload-artifact@v4
         with:
           name: model
           path: model.joblib
