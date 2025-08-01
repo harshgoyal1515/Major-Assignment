@@ -61,6 +61,11 @@ docker build -t mlops-regression .
 # Run Docker container
 docker run mlops-regression
 
+# DockerHub Image
+You can pull the latest Docker image from DockerHub: https://hub.docker.com/repository/docker/harshgoyal15/major/tags
+docker pull harshgoyal15/major
+docker run --rm harshgoyal15/major
+
 Artifacts
 GitHub Actions will upload the following:
 •	model.joblib
