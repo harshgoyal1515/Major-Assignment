@@ -23,9 +23,7 @@ jobs:
           pip install pytest
 
       - name: Run tests
-        run: pytest tests/
-        env:
-          PYTHONPATH: ${{ github.workspace }}/src
+        run: PYTHONPATH=src pytest tests/
 
   train_quantize:
     needs: test_suite
@@ -44,19 +42,19 @@ jobs:
           pip install -r requirements.txt
 
       - name: Train model
-        run: python src/train.py
+        run: PYTHONPATH=src python src/train.py
 
       - name: Quantize model
-        run: python src/quantize.py
+        run: PYTHONPATH=src python src/quantize.py
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: pipeline-artifacts
           path: |
-            model.joblib
-            quant_params.joblib
-            unquant_params.joblib
+            models/model.joblib
+            models/raw_params.joblib
+            models/quantized_params.joblib
 
   docker_build_test:
     needs: train_quantize
@@ -71,7 +69,7 @@ jobs:
           path: artifacts/
 
       - name: Build Docker image
-        run: docker build -t mlops-linear .
+        run: docker build -t mlops-regression .
 
       - name: Test Docker container
-        run: docker run mlops-linear
+        run: docker run mlops-regression
