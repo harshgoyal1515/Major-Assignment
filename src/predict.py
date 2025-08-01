@@ -1,20 +1,24 @@
 # src/predict.py
 
 import joblib
-from sklearn.datasets import fetch_california_housing
-from sklearn.model_selection import train_test_split
+import numpy as np
 
-# Load model
-model = joblib.load("model.joblib")
+def predict(X):
+    """
+    Predict using the trained linear regression model.
 
-# Load data
-data = fetch_california_housing()
-X, y = data.data, data.target
-_, X_test, _, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    Parameters:
+    - X: ndarray of shape (n_samples, n_features)
 
-# Predict
-predictions = model.predict(X_test)
+    Returns:
+    - predictions: ndarray of shape (n_samples,)
+    """
+    model = joblib.load("model.joblib")
+    return model.predict(X)
 
-# Show sample predictions
-print("Sample predictions:")
-print(predictions[:5])
+if __name__ == "__main__":
+    # Example usage for manual testing
+    X_sample = np.random.rand(5, 8)  # Random 5 samples, 8 features (California housing format)
+    preds = predict(X_sample)
+    print("Sample predictions:")
+    print(preds)
