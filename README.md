@@ -49,6 +49,9 @@ Step 5: Run Tests
 export PYTHONPATH=src
 pytest tests/
 
+<img width="1473" height="422" alt="image" src="https://github.com/user-attachments/assets/d8410826-72be-4752-877e-16d5d29fc8a7" />
+
+
 CI/CD with GitHub Actions
 The .github/workflows/ci.yml file runs:
 •	Tests on every push to main
