@@ -23,6 +23,8 @@ jobs:
           pip install pytest
 
       - name: Run tests
+        env:
+          PYTHONPATH: ./src
         run: pytest tests/
 
   train_quantize:
