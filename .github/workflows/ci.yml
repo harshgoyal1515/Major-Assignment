@@ -23,7 +23,7 @@ jobs:
           pip install pytest
 
       - name: Run tests
-        run: PYTHONPATH=src pytest tests/
+        run: pytest tests/
 
   train_quantize:
     needs: test_suite
@@ -42,19 +42,19 @@ jobs:
           pip install -r requirements.txt
 
       - name: Train model
-        run: PYTHONPATH=src python src/train.py
+        run: python src/train.py
 
       - name: Quantize model
-        run: PYTHONPATH=src python src/quantize.py
+        run: python src/quantize.py
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: pipeline-artifacts
           path: |
-            models/model.joblib
-            models/raw_params.joblib
-            models/quantized_params.joblib
+            model.joblib
+            quant_params.joblib
+            unquant_params.joblib
 
   docker_build_test:
     needs: train_quantize
