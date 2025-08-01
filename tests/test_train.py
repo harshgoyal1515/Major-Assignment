@@ -1,21 +1,27 @@
 # tests/test_train.py
 
-import sys
 import os
-
-#  This line adds the parent directory to Python's module path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 import joblib
 from sklearn.linear_model import LinearRegression
 from src.train import train_model
 
 def test_model_training_and_saving():
-    r2 = train_model()
+    # Run training and get outputs
+    model, r2, mse = train_model()
+
+    # Test 1: R² score should be reasonable
     assert r2 > 0.5, f"R² score too low: {r2}"
 
-    assert os.path.exists("model.joblib"), "Model file not found"
-    model = joblib.load("model.joblib")
+    # Test 2: Model file should exist
+    assert os.path.exists("model.joblib"), "model.joblib was not created"
 
+    # Test 3: Model should be a LinearRegression instance
     assert isinstance(model, LinearRegression), "Model is not LinearRegression"
-    assert hasattr(model, "coef_"), "Model lacks coef_ attribute"
+
+    # Test 4: Model should have learned coefficients
+    assert hasattr(model, "coef_"), "Model has no 'coef_' attribute"
+    assert hasattr(model, "intercept_"), "Model has no 'intercept_' attribute"
+
+    # Optional: Reload from file and verify it again
+    reloaded_model = joblib.load("model.joblib")
+    assert isinstance(reloaded_model, LinearRegression), "Reloaded model is invalid"
