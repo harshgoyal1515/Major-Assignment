@@ -23,9 +23,9 @@ jobs:
           pip install pytest
 
       - name: Run tests
-        env:
-          PYTHONPATH: ./src
-        run: pytest tests/
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+          pytest tests/
 
   train_quantize:
     needs: test_suite
