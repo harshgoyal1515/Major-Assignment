@@ -1,12 +1,12 @@
-name: CI Pipeline
+name: MLOps Pipeline
 
 on:
   push:
-    branches: 
+    branches:
       - main
 
 jobs:
-  test-suite:
+  test_suite:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,18 +14,18 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Pytest
-        run: |
-          pytest
+      - name: Run tests
+        run: pytest tests/
 
-  train-and-quantize:
-    needs: test-suite
+  train_quantize:
+    needs: test_suite
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -33,34 +33,42 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Train and Quantize Model
-        run: |
-          python src/train.py
-          python src/quantize.py
+      - name: Train model
+        run: python src/train.py
 
-      - name: Upload Model Artifact
+      - name: Quantize model
+        run: python src/quantize.py
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: model
-          path: model.joblib
+          name: pipeline-artifacts
+          path: |
+            model.joblib
+            unquant_params.joblib
+            quant_params.joblib
 
-  build-and-test-container:
-    needs: train-and-quantize
+  docker_build_test:
+    needs: train_quantize
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v3
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: pipeline-artifacts
+          path: artifacts/
 
-      - name: Build Docker Image
-        run: docker build -t mlops-linear .
+      - name: Build Docker image
+        run: docker build -t mlops-regression .
 
-      - name: Run Docker Container
-        run: docker run --rm mlops-linear
+      - name: Test Docker container
+        run: docker run mlops-regression
