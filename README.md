@@ -2,7 +2,8 @@
 
 This repository demonstrates an end-to-end MLOps workflow for a Linear Regression model using the California Housing dataset. It includes training, model quantization, automated testing with GitHub Actions, and Docker containerization.
 # Project Structure
- 
+ <img width="266" height="646" alt="image" src="https://github.com/user-attachments/assets/5bd7de52-3bcb-47e3-82c6-b0e7984f2145" />
+
 Step 1: Create Virtual Environment
 # Clone the repository
 git clone <your-repo-url>
@@ -17,7 +18,7 @@ pip install -r requirements.txt
 
 Step 2: Train the Model
 python src/train.py
-
+<img width="940" height="226" alt="image" src="https://github.com/user-attachments/assets/1b5850e8-46ea-4c2e-96a1-d499a9fb9d2f" />
 
 This will:
 •	Load the California Housing dataset
@@ -36,12 +37,14 @@ Save raw parameters as unquant_params.joblib
 Quantize parameters to 8-bit unsigned integers
 Save quantized parameters as quant_params.joblib
 Perform inference with de-quantized weights
- 
+ <img width="940" height="148" alt="image" src="https://github.com/user-attachments/assets/8a0e53dd-6d22-436f-92ac-c586f15af74f" />
+
 
 Step 4: Predict
 python src/predict.py
 
- 
+ <img width="940" height="122" alt="image" src="https://github.com/user-attachments/assets/963b620e-85f1-4aaa-997f-bb9353bb53f9" />
+
 Step 5: Run Tests
 export PYTHONPATH=src
 pytest tests/
@@ -64,6 +67,13 @@ GitHub Actions will upload the following:
 •	quant_params.joblib
 •	unquant_params.joblib
 These are downloaded later for Docker testing.
+Metric	Value
+Model Type	Linear Regression
+Dataset	California Housing (sklearn)
+R² Score	~0.60 (typical)
+Features	8 numerical features
+Target	Median house value
+
 Model Performance
 Metric	Value
 Model Type	Linear Regression
