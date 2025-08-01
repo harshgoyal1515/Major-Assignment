@@ -1,6 +1,7 @@
 # src/train.py
 
 import joblib
+import os
 from sklearn.datasets import fetch_california_housing
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
@@ -25,13 +26,20 @@ def train_model():
     r2 = r2_score(y_test, y_pred)
     mse = mean_squared_error(y_test, y_pred)
 
-    print(f"R² Score: {r2:.4f}")
-    print(f"Mean Squared Error: {mse:.4f}")
-
     # Save model
-    joblib.dump(model, "model.joblib")
+    model_path = "model.joblib"
+    joblib.dump(model, model_path)
 
-    return r2
+    # Compute model size
+    model_size_kb = os.path.getsize(model_path) / 1024
+
+    # Output results
+    print("\n✅ Model Evaluation")
+    print(f"R² Score:             {r2:.4f}")
+    print(f"MSE:                  {mse:.4f}")
+    print(f"Model Size:           {model_size_kb:.1f} KB")
+
+    return model, r2, mse
 
 if __name__ == "__main__":
     train_model()
