@@ -81,6 +81,7 @@ Dataset	California Housing (sklearn)
 R² Score	~0.60 (typical)
 Features	8 numerical features
 Target	Median house value
+<img width="682" height="86" alt="image" src="https://github.com/user-attachments/assets/978faaed-cff6-4e20-8c79-c6f5261377db" />
 
 Model Performance
 Metric	Value
@@ -108,6 +109,9 @@ Unit tests cover:
 •	Training process verification
 •	R² score threshold validation
 •	Parameter extraction for quantization
+Below is the performance comparison table
+Performance Comparison Table: Metric	Original Model	Quantized Model	Difference
+
 License
 This project is for educational purposes as part of an MLOps assignment.
 
